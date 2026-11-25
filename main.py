@@ -1,37 +1,32 @@
 #!/usr/bin/env python3
-"""Angry Judge: The Short Rant Contest entry.
+"""Angry Judge: The Short Rant Contest — v2 entry.
 
-This rant was selected from 12 candidate rants scored against the
-judge's criteria: a universally relatable everyday annoyance, a
-tight setup-and-payoff structure, escalating frustration that lands
-on a resigned closing beat, and no wasted words. The password-reset
-loop won because nearly everyone has lived it, the contradiction in
-the premise ("this password was already used") is instantly funny,
-and the ending ("We always do.") turns one bad login into an
-eternal, shared ritual.
+Winner: "My Smoke Detector Detects Sleep" (272 chars). Chosen from 7
+candidates because its mechanism is the most different from the crowded
+board (no password/auth, typo, self-checkout or traffic angles): a safety
+device that only chirps at 3 a.m., whose beep migrates between detectors,
+capped by the reframe "It doesn't detect smoke. It detects sleep."
 
-Output contract: running this program writes the exact bytes of
-RANT (UTF-8, no trailing newline added) to /output/entry.txt,
-creating /output if needed. Standard library only, no network,
-no file reads, deterministic on every run.
+Output contract: writes exactly RANT (UTF-8, no trailing newline) to
+$MAKEFUN_OUTPUT_DIR/entry.txt (default /output) and prints it to stdout.
 """
 
+import os
 from pathlib import Path
 
-OUTPUT_PATH = Path("/output/entry.txt")
+# Resubmit v2 (25 Nov 2026): new rant, counts from round 2; Force_Last replaces v1.
+RANT = "My smoke detector only beeps at 3 a.m. One chirp. Then silence. I stand on a chair, ear to the ceiling, waiting for the next one — which comes 47 minutes later, from a DIFFERENT detector. By morning, all four are silent and smug. It doesn't detect smoke. It detects sleep."
 
-RANT = (
-    "I forgot my password, so the site sent me a reset link \u2014 which asked "
-    "for my password. I typed the old one. 'This password was already used.' "
-    "OF COURSE IT WAS. That's why I'm here. You rejected the only password I "
-    "remember, then forced me to invent a new one I will forget by Thursday. "
-    "We will do this again next week. We always do."
-)
+DEFAULT_OUTPUT_DIR = "/output"
+OUTPUT_FILENAME = "entry.txt"
 
 
 def main() -> None:
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(RANT, encoding="utf-8")
+    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", DEFAULT_OUTPUT_DIR))
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / OUTPUT_FILENAME
+    path.write_text(RANT, encoding="utf-8")
+    print(RANT)
 
 
 if __name__ == "__main__":
